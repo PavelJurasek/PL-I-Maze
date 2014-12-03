@@ -185,6 +185,12 @@ public class Map {
     }
 
     public void setEndTile(int x, int y) {
+        // wall not reachable
+//        map[x-1][y].setType(TileType.WALL);
+//        map[x+1][y].setType(TileType.WALL);
+//        map[x][y-1].setType(TileType.WALL);
+//        map[x][y+1].setType(TileType.WALL);
+
         map[x][y].setType(TileType.END);
         this.endTile = map[x][y];
     }
