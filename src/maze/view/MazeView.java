@@ -17,6 +17,10 @@ public class MazeView extends JFrame {
 
     private Map map;
 
+    private Color grid[][];
+    private int width;
+    private int height;
+
 
     public MazeView(Controller controller) {
         this.controller = controller;
@@ -30,39 +34,59 @@ public class MazeView extends JFrame {
         setVisible(true);
     }
 
+    
     public void setMap(Map map) {
         this.map = map;
-    }
+        width = getWidth() / map.getWidth();
+        height = getHeight() / map.getHeight();
 
-    @Override
-    public void paint(Graphics g) {
-        final int width = getWidth() / map.getWidth();
-        final int height = getHeight() / map.getHeight();
-
-        g.setColor(Color.BLACK);
-
+        grid = new Color[map.getWidth()][map.getHeight()];
 
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
-                TileType type = map.getTile(x, y).getType();
-                switch (type) {
-                    case WALL:
-                        g.fillRect(x * width, y * height, width, height);
+                setBlockColor(x, y, getColorType(x, y));
+            }
+        }
 
-                        break;
-                    case START:
-                        g.setColor(Color.BLUE);
-                        g.fillRect(x * width, y * height, width, height);
-                        g.setColor(Color.BLACK);
+    }
 
-                        break;
-                    case END:
-                        g.setColor(Color.RED);
-                        g.fillRect(x * width, y * height, width, height);
-                        g.setColor(Color.BLACK);
 
-                        break;
-                }
+    private Color getColorType(int x, int y) {
+        TileType type = map.getTile(x, y).getType();
+        switch (type) {
+            case START:
+                return Color.BLUE;
+            case END:
+                return Color.RED;
+            case WALL:
+                return Color.BLACK;
+            case EMPTY:
+            default:
+                return new Color(0,0,0,0); // transparent
+        }
+    }
+
+
+    public void colorPath(int x, int y) {
+        setBlockColor(x, y, Color.GRAY);
+    }
+
+
+    private void setBlockColor(int x, int y, Color col) {
+        grid[x][y] = col;
+    }
+
+
+    @Override
+    public void paint(Graphics g) {
+        if (map == null) {
+            return;
+        }
+
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                g.setColor(grid[x][y]);
+                g.fillRect(x * width, y * height, width, height);
             }
         }
     }
