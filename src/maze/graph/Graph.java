@@ -119,6 +119,44 @@ public class Graph {
     }
 
 
+    public Node findFurthermost(Node node) {
+        for (int k[]: hash.keySet()) {
+            hash.get(k).setStatus(Status.INITIAL);
+        }
+
+        Queue<Node> depository = new LinkedList<Node>();
+        HashMap<Node, Node> pre = new HashMap<Node, Node>();
+        HashMap<Node, Integer> depth = new HashMap<Node, Integer>();
+
+        Node deepest = node;
+
+        depth.put(node, 0);
+        depository.add(node);
+
+        while (!depository.isEmpty()) {
+            Node n = depository.remove();
+
+            if (depth.containsKey(n) && depth.get(n) > depth.get(deepest)) {
+                deepest = n;
+            }
+
+            for (Node neighbor: n.getNeighbors()) {
+                if (neighbor.getStatus().equals(Status.INITIAL)) {
+                    pre.put(neighbor, n);
+                    depth.put(neighbor, depth.get(n)+1);
+                    neighbor.setStatus(Status.FOUND);
+                    depository.add(neighbor);
+                }
+            }
+
+            n.setStatus(Status.PROCESSED);
+        }
+
+        predecessors = pre;
+        return deepest;
+    }
+
+
     public void printToConsole() {
         if (predecessors == null) {
             return;
