@@ -92,7 +92,7 @@ public class Map {
 
     public void build() {
         clear();
-        final double probability = 0.05;
+        final double probability = 0.0;
 
         while (helperCount > 0) {
             boolean dissolve = random() < probability;
@@ -176,6 +176,10 @@ public class Map {
     }
 
     public void setStartTile(int x, int y) {
+        if (startTile != null) {
+            startTile.setType(TileType.EMPTY);
+        }
+
         map[x][y].setType(TileType.START);
         this.startTile = map[x][y];
     }
@@ -190,6 +194,10 @@ public class Map {
 //        map[x+1][y].setType(TileType.WALL);
 //        map[x][y-1].setType(TileType.WALL);
 //        map[x][y+1].setType(TileType.WALL);
+
+        if (endTile != null) {
+            endTile.setType(TileType.EMPTY);
+        }
 
         map[x][y].setType(TileType.END);
         this.endTile = map[x][y];
