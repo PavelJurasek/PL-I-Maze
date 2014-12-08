@@ -89,7 +89,7 @@ public class Graph {
     }
 
 
-    public boolean findPath() {
+    public boolean findShortestPath() {
         Queue<Node> depository = new LinkedList<Node>();
         HashMap<Node, Node> pre = new HashMap<Node, Node>();
 
